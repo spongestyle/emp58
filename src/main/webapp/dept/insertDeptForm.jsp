@@ -16,8 +16,9 @@
 	<div>
 		<jsp:include page="/inc/menu.jsp"></jsp:include>
 	</div>
-	
+	<form action = "<%=request.getContextPath()%>/dept/insertDeptAction.jsp">
 		<div class= "container mt-3" style= "width:600px;">
+			
 			<table class = "table">
 				<h2>부서 추가</h2>
 					<!-- msg 파라메타값이 있으면 출력 -->
@@ -29,8 +30,6 @@
 						}
 					%>
 				
-					
-				<form action = "<%=request.getContextPath()%>/dept/insertDeptAction.jsp">
 							
 					<tr>
 						<td>부서번호</td>
@@ -48,9 +47,9 @@
 						<td colspan="2">
 						<button type = "submit">add</button>
 						</td>
-					</tr>
-				</form>
+					</tr>				
 			</table>
 		</div>
+	</form>
 </body>
 </html>

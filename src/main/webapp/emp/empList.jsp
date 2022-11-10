@@ -85,7 +85,7 @@
 		
 		<div>현재 페이지 : <%=currentPage%></div>
 	
-		<!-- 페이징 코드 -->
+		<!-- 페이징 코드 ★★★-->
 		<div>
 			<a href="<%=request.getContextPath()%>/emp/empList.jsp?currentPage=1">처음</a>
 			<%

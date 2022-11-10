@@ -19,10 +19,17 @@
 			<li><a href="<%=request.getContextPath()%>/dept/deptList.jsp">
 				<p class="h2 text-center rounded-circle">부서관리</p>
 				</a>
+			</li>	
+			<li>	
 				<a href="<%=request.getContextPath()%>/emp/empList.jsp">
 				<p class="h2 text-center rounded-circle">사원관리</p>
 				</a>
-			</li>		
+			</li>
+			<li>	
+				<a href="<%=request.getContextPath()%>/board/boardList.jsp">
+				<p class="h2 text-center rounded-circle">게시판</p>
+				</a>
+			</li>			
 		</oi>
 		<br>
 		<div style ="text-align:center;" > 
