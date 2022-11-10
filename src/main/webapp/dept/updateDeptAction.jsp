@@ -7,18 +7,18 @@
 	//한글
 	request.setCharacterEncoding("utf-8");
 
-	//안전 장치코드
-
-	if(request.getParameter("dept_no") == null || request.getParameter("dept_name") == null)
-	{ 
-		response.sendRedirect(request.getContextPath()+"/dept/deptList.jsp"); /////////////
-		return;
-	}  
-
 	// 1.요청분석
+	String deptNo = request.getParameter("deptNo");
+	String deptName = request.getParameter("deptName");
+	
+	if(deptNo == null || deptName == null || deptNo.equals("") || deptName.equals("")) {
+		response.sendRedirect(request.getContextPath()+"/dept/updateDeptForm.jsp");
+		return;
+	}
+	
 	Department dept = new Department();
-	dept.deptNo = request.getParameter("dept_no");
-	dept.deptName = request.getParameter("dept_name");
+	dept.deptNo = deptNo;
+	dept.deptName = deptName;
 
 
 	// 2.요청처리
@@ -33,8 +33,9 @@
 	PreparedStatement stmt = conn.prepareStatement(sql);
 	
 	//sql 값 세팅
-	stmt.setString(1, dept.deptNo);
-	stmt.setString(2, dept.deptName);
+	stmt.setString(1, deptName);
+	stmt.setString(2, deptNo);
+	
 	
 	//디버깅
 	

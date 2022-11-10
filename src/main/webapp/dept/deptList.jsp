@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import ="java.sql.*" %>
+<%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
 <%@ page import = "vo.*" %>
+<%@ page import = "java.net.URLEncoder" %>
 <%
 
 	
@@ -36,6 +37,10 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<!-- 메뉴 -->
+	<div>
+		<jsp:include page="/inc/menu.jsp"></jsp:include>
+	</div>
 	<div class= "container mt-3" style= "width:600px;">
 		<br>
 		<h1>DEPT LIST</h1>
@@ -59,12 +64,12 @@
 							<td><%=d.deptNo%></td>
 							<td><%=d.deptName%></td>
 							<td>
-								<a href="<%=request.getContextPath()%>/dept/updateDeptForm.jsp?dept_no=<%=d.deptNo%>">
+								<a href="<%=request.getContextPath()%>/dept/updateDeptForm.jsp?deptNo=<%=d.deptNo%>">
 								수정
 								</a>
 							</td>
 							<td>
-								<a href="<%=request.getContextPath()%>/dept/deleteDept.jsp?dept_no=<%=d.deptNo%>">
+								<a href="<%=request.getContextPath()%>/dept/deleteDept.jsp?deptNo<%=d.deptNo%>">
 								삭제
 								</a>
 							</td>
