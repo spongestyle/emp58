@@ -13,29 +13,43 @@
 </head>
 <body>
 	<div class= "container mt-3" style= "width:800px;">
-		<div>
+		<div >
 			<jsp:include page="/inc/menu.jsp"></jsp:include>
 		</div>
 		<br>
 		<h3>게시글 작성</h3>
-		<form action = "<%=request.getContextPath()%>/board/insertBoardAction.jsp">
+		<!-- msg 파라메타값이 있으면 출력 -->
+			<%
+				if (request.getParameter("msg") != null) {		
+			%>		
+					<div><%=request.getParameter("msg")%></div>
+			<%
+				}
+			%>
+		<form action = "<%=request.getContextPath()%>/board/insertBoardAction.jsp" method="post">
 			<table class="table table-bordered">
 			
 				<tr>
-					<th style= "width:80px;">제목</th>
+					<th style= "width:90px;">제목</th>
 					<td>
-						<input type="text" class="form-control" name = "title">
+						<input type="text"  name = "boardTitle" class="form-control">
 					</td>
 				</tr>
 				<tr>
 					<th>내용</th>
 					<td>
-						<textarea class="form-control" rows="5" cols="50" name="content"></textarea>
+						<textarea name="boardContent" class="form-control" rows="5" cols="50" ></textarea>
 					</td>
 				</tr>
 				<tr>
 					<th>글쓴이</th>
-					<td><input type = "text" class = "form-control" name="writer"></td>
+					<td><input type = "text" name="boardWriter" class = "form-control"  style= "width:130px;"></td>
+				</tr>
+				<tr>
+					<td>비밀번호</td>
+					<td>
+						<input type="password" name="boardPw" class="form-control" style= "width:130px;">
+					</td>
 				</tr>
 				<tr>
 					<td colspan="2">

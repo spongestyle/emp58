@@ -1,33 +1,67 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
 <%@ page import = "vo.*" %>
+<%@ page import = "java.util.*" %>
 
 
 <%
+	
 	//1
 	int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+	// 댓글 페이징에 사용할 현재 페이지
+	int currentPage = 1;
+	if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
 	
 	
-	//2
+	//2 - 1 게시글 하나
+	
+	// 접속연결
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/employees","root","java1234");
-	String sql = "SELECT board_title boardTitle, board_content boardContent, board_writer boardWriter, createdate FROM board WHERE board_no = ?";
-	PreparedStatement stmt = conn.prepareStatement(sql);
-	stmt.setInt(1, boardNo);
-	ResultSet rs = stmt.executeQuery();
+	
+	String boardSql = "SELECT board_title boardTitle, board_content boardContent, board_writer boardWriter, createdate FROM board WHERE board_no = ?";
+	PreparedStatement boardStmt = conn.prepareStatement(boardSql);
+	boardStmt.setInt(1, boardNo);
+	ResultSet boardRs = boardStmt.executeQuery();
 	Board board = null;
-	if(rs.next()) {
+	if(boardRs.next()) {
 		board = new Board();
 		board.boardNo = boardNo;
-		board.boardTitle = rs.getString("boardTitle");
-		board.boardContent = rs.getString("boardContent");
-		board.boardWriter = rs.getString("boardWriter");
-		board.createdate = rs.getString("createdate");
+		board.boardTitle = boardRs.getString("boardTitle");
+		board.boardContent = boardRs.getString("boardContent");
+		board.boardWriter = boardRs.getString("boardWriter");
+		board.createdate = boardRs.getString("createdate");
 	}
 
-	//3
+	// 2- 2 댓글 목록
+	// 이슈) 댓글도 페이징이 필요하다 지금은 안할것.
+	// LIMIT ?, ?
+			
+			
+	int rowPerPage = 5;
+	int beginRow = (currentPage -1 ) * rowPerPage;
+	
+	String commentSql = "SELECT comment_no commentNo, comment_content commentContent, createdate FROM comment WHERE board_no = ? ORDER BY comment_no DESC LIMIT ?, ?";
+	PreparedStatement commentStmt = conn.prepareStatement(commentSql);
+	commentStmt.setInt(1, boardNo);
+	commentStmt.setInt(2, beginRow);
+	commentStmt.setInt(3, rowPerPage);
 
-
+	
+	ResultSet commentRs = commentStmt.executeQuery();
+	ArrayList<Comment> commentList = new ArrayList<Comment>();
+	while(commentRs.next()) {
+		Comment c = new Comment();
+		c.commentNo = commentRs.getInt("commentNo");
+		c.commentContent = commentRs.getString("commentContent");
+		c.createdate = commentRs.getString("createdate");
+		commentList.add(c);
+	}
+	// 2-3 댓글 전체의 수 --> lastPage
+	int lastPage = 0;	
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -70,6 +104,75 @@
 		</table>
 			<a href="<%=request.getContextPath()%>/board/updateBoardForm.jsp?boardNo=<%=boardNo%>">수정</a>
 			<a href="<%=request.getContextPath()%>/board/deleteBoardForm.jsp?boardNo=<%=boardNo%>">삭제</a>
+
+		<!-- 댓글 목록 -->
+	
+
+		<h4>댓글목록</h4>
+		<%
+			for(Comment c : commentList) {
+		%>
+		
+			<table>
+				<tr>
+					<td  style= "width:80px;"><div><%=c.commentNo%></div></td>
+				 	<td><div><%=c.commentContent%></div></td>
+				 	<td  style= "width:80px;">
+				 		<div><a href="<%=request.getContextPath()%>/board/deleteCommentForm.jsp?commentNo=<%=c.commentNo%>&boardNo=<%=boardNo%>">
+							삭제</a>
+						</div>
+					</td>
+					<td style= "width:100px;"><div><%=c.createdate %></div></td>				 	
+				</tr>
+			</table>				
 	</div>
+		<%		
+			}
+		%>
+		
+		
+		<!-- 댓글 페이징 -->
+		<%
+			if(currentPage > 1) {
+		%>
+				<a href="<%=request.getContextPath()%>/board/boardOne.jsp?boardNo=<%=boardNo%>&currentPage=<%=currentPage-1%>">
+					이전
+				</a>
+		<%		
+			}
+			// 다음 <-- 마지막페이지 <-- 전체행의 수 
+			if(currentPage < lastPage) {
+		%>
+				<a href="<%=request.getContextPath()%>/board/boardOne.jsp?boardNo=<%=boardNo%>&currentPage=<%=currentPage+1%>">
+					다음
+				</a>
+		<%	
+			}
+		%>
+	
+	<!-- 댓글입력 폼 -->
+	<div class= "container mt-3" style= "width:800px;">
+		<h6>댓글입력</h6>
+	
+		<form action = "<%=request.getContextPath()%>/board/insertCommentAction.jsp" method="post">
+			<input type = "hidden" name = "boardNo" value = "<%=board.boardNo%>">
+			<table  class ="table table-bordered" >
+				<tr>
+					<td>내용</td>
+					<td><textarea rows="3" cols="80" name = "commentContent"></textarea></td>
+				</tr>
+				<tr>
+					<td>비밀번호</td>
+					<td>
+						<input type = "password" name = "commentPw">
+					</td>
+				</tr>
+			</table>
+			<button type = "submit">댓글입력</button>
+		</form>
+	</div>
+	
+	
+	
 </body>
 </html>

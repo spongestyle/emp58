@@ -2,6 +2,7 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import = "vo.*" %>
 <%@ page import = "java.util.*" %>
+<%@ page import = "java.net.*" %>
 <%
 	// 1. 요청분석
 	
@@ -11,6 +12,9 @@
 	}
 	
 	// 2. 요청처리 후 (필요하다면) 모델데이터를 생성
+	// 한글
+	request.setCharacterEncoding("UTF-8");
+	// 접속연결
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/employees", "root", "java1234");
 	
@@ -65,8 +69,8 @@
 		</div>	
 		
 		
-		<h2>자유 게시판</h1>
-		<div ="container mt-3">
+		<h2>자유 게시판</h2>
+		<div class ="container mt-3">
 			<div>
 				<a href = "<%=request.getContextPath()%>/board/insertBoardForm.jsp">게사글 입력</a>
 			</div>
@@ -121,6 +125,7 @@
 			
 			</div>
 		</div>
+	
 
 </body>
 </html>

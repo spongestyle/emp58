@@ -13,7 +13,7 @@
 	
 	if(deptNo == null || deptName == null || deptNo.equals("") || deptName.equals("")) {
 		response.sendRedirect(request.getContextPath()+"/dept/updateDeptForm.jsp");
-		return;
+		return; 
 	}
 	
 	Department dept = new Department();
