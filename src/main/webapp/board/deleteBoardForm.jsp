@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "java.sql.*" %>
+<%@ page import = "vo.*" %>
+<%@ page import = "java.util.*" %>
 
 <%
 	//한글넣기
@@ -22,12 +24,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div>
+	<div class = "text-center mb-3" style = "width: 600px">
 		<jsp:include page="/inc/menu.jsp"></jsp:include>
 	</div>
 	 <h1>게시글 삭제</h1>
 	<%
+		
 		if(msg != null) {
+			
 	%>
 			<div><%=msg%></div>
 	<%      
@@ -37,7 +41,7 @@
 		<input type="hidden" name="boardNo" value="<%=boardNo%>">
 			삭제할 비밀번호 :
 		<input type="password" name="boardPw">
-		<button type="submit">삭제</button>
+		<button type="submit">&#10060;삭제</button>
 	</form>
 
 

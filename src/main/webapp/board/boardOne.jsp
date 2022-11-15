@@ -69,6 +69,16 @@
 	<!-- Bootstrap -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+	<style>
+	th.green { background: rgba(0, 128, 0, 0.1); }
+	
+	td.green { background: rgba(0, 128, 0, 0.1); }
+	
+	body { background: rgb(238, 238, 255); }
+
+	table { background-color : white;}
+	
+	</style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -78,58 +88,66 @@
 		<div>
 			<jsp:include page="/inc/menu.jsp"></jsp:include>
 		</div>
+	
 		
-		<h1>게시글 상세보기</h1>
-		<table class = "table">
+		<h1 class = "text-center mb-3">게시글 상세보기</h1>
+		<table class = "table table-bordered table-hover w-100 rounded">
 			<tr>
-				<td style= "width:80px;">NO</td>
-				<td><%=board.boardNo%></td>
+				<th style= "width:100px"; class = "green">NO</th>
+				<th><%=board.boardNo%></th>
 			</tr>
 			<tr>
-				<td>제목</td>
-				<td><%=board.boardTitle%></td>
+				<th class = "green">제목</th>
+				<th><%=board.boardTitle%></th>
 			</tr>
 			<tr>
-				<td>내용</td>
+				<td class = "green" >내용</td>
 				<td><%=board.boardContent%></td>
 			</tr>
 			<tr>
-				<td>글쓴이</td>
+				<td class = "green">글쓴이</td>
 				<td><%=board.boardWriter%></td>
 			</tr>
 			<tr>
-				<td>게시날짜</td>
+				<td class = "green">게시날짜</td>
 				<td><%=board.createdate%></td>
 			</tr>
 		</table>
-			<a href="<%=request.getContextPath()%>/board/updateBoardForm.jsp?boardNo=<%=boardNo%>">수정</a>
-			<a href="<%=request.getContextPath()%>/board/deleteBoardForm.jsp?boardNo=<%=boardNo%>">삭제</a>
-
+			<a href="<%=request.getContextPath()%>/board/updateBoardForm.jsp?boardNo=<%=boardNo%>">&#9986;수정</a>
+			<a href="<%=request.getContextPath()%>/board/deleteBoardForm.jsp?boardNo=<%=boardNo%>">&#10060;삭제</a>
+		<br>
+		
+		
+		
 		<!-- 댓글 목록 -->
 	
-
-		<h4>댓글목록</h4>
-		<%
-			for(Comment c : commentList) {
-		%>
 		
-			<table>
-				<tr>
-					<td  style= "width:80px;"><div><%=c.commentNo%></div></td>
-				 	<td><div><%=c.commentContent%></div></td>
-				 	<td  style= "width:80px;">
-				 		<div><a href="<%=request.getContextPath()%>/board/deleteCommentForm.jsp?commentNo=<%=c.commentNo%>&boardNo=<%=boardNo%>">
-							삭제</a>
-						</div>
-					</td>
-					<td style= "width:100px;"><div><%=c.createdate %></div></td>				 	
-				</tr>
-			</table>				
-	</div>
-		<%		
-			}
-		%>
 		
+		<div>
+			<h4 class="text-center mb-3">댓글목록</h4>
+			<div class= "container mt-3" style= "width:800px;">
+				<%
+					for(Comment c : commentList) {
+				%>
+				<table  class= "table table table-bordered table-hover w-100 rounded">
+					<tr>
+						<td  class = "green"style= "width:60px;"><div><%=c.commentNo%></div></td>
+					 	<td><div><%=c.commentContent%></div></td>
+					 	<td  style= "width:80px;">
+					 		<div><a href="<%=request.getContextPath()%>/board/deleteCommentForm.jsp?commentNo=<%=c.commentNo%>&boardNo=<%=boardNo%>">
+								&#10060;삭제</a>
+							</div>
+						</td>
+						<td style= "width:120px;"><div><%=c.createdate %></div></td>				 	
+					</tr>
+				</table>
+				<%		
+					}
+				%>
+		
+			
+			</div>			
+		</div>
 		
 		<!-- 댓글 페이징 -->
 		<%
@@ -140,19 +158,22 @@
 				</a>
 		<%		
 			}
+		
 			// 다음 <-- 마지막페이지 <-- 전체행의 수 
 			if(currentPage < lastPage) {
 		%>
+		<span><%=currentPage%></span>
 				<a href="<%=request.getContextPath()%>/board/boardOne.jsp?boardNo=<%=boardNo%>&currentPage=<%=currentPage+1%>">
 					다음
 				</a>
 		<%	
 			}
 		%>
+		
 	
 	<!-- 댓글입력 폼 -->
 	<div class= "container mt-3" style= "width:800px;">
-		<h6>댓글입력</h6>
+		<h4 class = "text-center mb-3">댓글입력</h4>
 	
 		<form action = "<%=request.getContextPath()%>/board/insertCommentAction.jsp" method="post">
 			<input type = "hidden" name = "boardNo" value = "<%=board.boardNo%>">
@@ -168,7 +189,7 @@
 					</td>
 				</tr>
 			</table>
-			<button type = "submit">댓글입력</button>
+			<button type = "submit">&#9989;댓글입력</button>
 		</form>
 	</div>
 	

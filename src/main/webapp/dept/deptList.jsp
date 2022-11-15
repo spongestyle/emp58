@@ -8,12 +8,33 @@
 	
 	
 	// 1.요청 분석 (Controller)
+	request.setCharacterEncoding("UTF-8");
+	String word = request.getParameter("word");
+	// 1) word -> null 2) word -> '' 3) word ->'단어'
 	
 	// 2.업무(요청)처리 (Model)-> 모델데이터(단일값 or 자료구조형태(배열, 리스트, ...))
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/employees", "root", "java1234");
-	String sql = "SELECT dept_no deptNo, dept_name deptName FROM departments ORDER BY dept_no ASC"; //쿼리만들기
-	PreparedStatement stmt = conn.prepareStatement(sql); //쿼리 문장을 실행시키는 객체
+
+	
+	// 부서 검색하기
+	String sql = null;
+	PreparedStatement stmt = null;
+	if (word == null) {
+			sql = "SELECT dept_no deptNo, dept_name deptName FROM departments ORDER BY dept_no ASC";
+			stmt = conn.prepareStatement(sql);
+			} else {
+			/*
+			SELECT *
+			FROM departments
+			WHERE dept_name LIKE ?
+			ORDER BY dept_no ASC
+			*/
+			sql = "SELECT dept_no deptNo, dept_name deptName FROM departments WHERE dept_name LIKE ? ORDER BY dept_no ASC";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString (1, "%"+word+"%");
+	}
+
 	ResultSet rs = stmt.executeQuery();  
 	// <- 모델 데이터로서 ResultSet은 일반적인 타입이 아니고 독립적인 타입도 아니다.
 	// ResultSet rs라는 모델 자료구조를 좀 더 일반적이고 독립적인 자료구조로 변경을 하자.
@@ -45,6 +66,13 @@
 		<br>
 		<h1>DEPT LIST</h1>
 		<br>
+		<!-- 부서명 검색창 -->
+		<form action = "<%=request.getContextPath()%>/dept/deptList.jsp" method="post">
+			<label for ="">부서이름 검색 : </label>
+			<input type = "text" name="word" id="word">
+			<button type = submit>검색</button>	
+		</form>
+		
 		<div>		
 			<!-- 부서목록출력(부서번호 내림차순으로) -->
 			<table  class = "table">

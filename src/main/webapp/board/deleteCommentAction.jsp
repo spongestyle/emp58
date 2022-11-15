@@ -3,9 +3,12 @@
 <%@ page import = "java.net.*" %>
 
 <%
-
+	request.setCharacterEncoding("utf-8");
 	int commentNo = Integer.parseInt(request.getParameter("commentNo"));
+	int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 	String commentPw = request.getParameter("commentPw");
+	
+	
 
 	// 2
 	// 연결접속
@@ -13,7 +16,7 @@
 	Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/employees","root","java1234");
 
 	// 쿼리 문자열 생성
-	String sql = "DELETE FROM comment WHERE comment_no=? AND comment_pw=?";
+	String sql = "DELETE FROM comment WHERE comment_no=?  AND comment_pw=?";
 	// 쿼리 셋팅
 	PreparedStatement stmt = conn.prepareStatement(sql);
 	stmt.setInt(1, commentNo);
@@ -27,7 +30,9 @@
 	} else {
 		String msg = URLEncoder.encode("비밀번호를 확인하세요", "utf-8");
 		response.sendRedirect(
-				request.getContextPath()+"/board/deleteBoardForm.jsp?boardNo="+commentNo+"&msg="+msg);
+				request.getContextPath()+"/board/deleteCommentForm.jsp?commentNo="+commentNo+"&msg="+msg);
 	}
+
+	
 
 %>

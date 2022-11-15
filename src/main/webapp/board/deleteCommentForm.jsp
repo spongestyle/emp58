@@ -26,47 +26,62 @@
 <html>
 <head>
 <meta charset="UTF-8">
+	<!-- Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <title>Insert title here</title>
+<style>
+	th.green { background: rgba(0, 128, 0, 0.1); }
+	
+	td.green { background: rgba(0, 128, 0, 0.1); }
+	
+	body { background: rgb(238, 238, 255); }
+
+	table { background-color : white;}
+	
+	</style>
 </head>
 <body>
-	<div>
+	<div class = "text-center mb-3">
 		<jsp:include page="/inc/menu.jsp"></jsp:include>
 	</div>
-	 <h1>게시글 삭제</h1>
+	 <h3 class = "text-center mb-3">[<%=commentNo%>번] 댓글 삭제</h3>
 	<%
 		if(msg != null) {
 	%>
-			<div><%=msg%></div>
+			<div id="msg"><%=msg%></div>
 	<%      
 		}
 	%>
-		   <form method="post" action="<%=request.getContextPath()%>/board/deleteCommentAction.jsp">
-	   		<table class="table">
-	   			<tr>
-					<td colspan="2">
-						<input type="hidden" name="boardNo" value=<%=boardNo%>>
-					</td>
-				</tr>
-				<tr>
-					<td>댓글 번호</td>
-					<td>
-						<input type="text" name="commentNo" value=<%=commentNo%> readonly="readonly">
-					</td>
-				</tr>
-				<tr>
-					<td>비밀번호</td>
-					<td>
-						<!-- 비밀번호는 넘어오면 안 되므로 value값 주지 않음 -->
-						<input type="password" name="commentPw" class="box">
-					</td>
-				</tr>
-				<tr class="text-center">
-					<td colspan="2">
-						<button type="submit" class="btn btn-outline-primary">삭제</button>
-					</td>
-				</tr>
-	   		</table>
-	   </form>
+		<div class= "container mt-3" style= "width:600px;">
+			<form method="post" action="<%=request.getContextPath()%>/board/deleteCommentAction.jsp">
+				<table class="table">
+					<tr>
+						<td colspan="2">
+							<input type="hidden" name="boardNo" value=<%=boardNo%>>
+						</td>
+					</tr>
+					<tr>
+						<td>댓글 번호</td>
+						<td>
+							<input type="text" name="commentNo" value=<%=commentNo%> readonly="readonly">
+						</td>
+					</tr>
+					<tr>
+						<td>비밀번호</td>
+						<td>
+							<!-- 비밀번호는 넘어오면 안 되므로 value값 주지 않음 -->
+							<input type="password" name="commentPw" class="box">
+						</td>
+					</tr>
+					<tr class="text-center">
+						<td colspan="2">
+							<button type="submit" class="btn btn-outline-primary" value="삭제">&#10060;삭제</button>
+						</td>
+					</tr>
+	   			</table>
+			</form>
+		</div>	   
 
 
 </body>
