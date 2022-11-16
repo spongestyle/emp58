@@ -4,10 +4,10 @@
 <%@ page import = "java.util.*" %>
 <%@ page import = "java.net.*" %>
 <%
+
 	// 1. 요청분석
 	
 	int currentPage = 1; //현재 페이지
-	
 	if(request.getParameter("currentPage") != null) { //안전장치
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));		
 	}
@@ -68,11 +68,9 @@
 		listStmt.setInt(2, beginRow);
 		listStmt.setInt(3, ROW_PER_PAGE);
 	}
-	
 	ResultSet listRs = listStmt.executeQuery(); //모델 source data
+	
 	ArrayList<Board> boardList = new ArrayList<Board>(); // 모델의 new data
-	
-	
 	while(listRs.next()) {
 		Board b = new Board();
 		b.boardNo = listRs.getInt("boardNo");
@@ -195,7 +193,7 @@
 						}				
 					%>
 				</div>
-						<!-- 게시글 검색창 -->
+				<!-- 게시글 검색창 -->
 				<form action = "<%=request.getContextPath()%>/board/boardList.jsp" method="post">
 					<label for ="word">게시글 검색 : </label>
 					<input type = "text" name="word" id="word">
